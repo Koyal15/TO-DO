@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_URL } from '../api'
 import { useNavigate } from 'react-router-dom'
 
 function TodoList() {
@@ -16,7 +17,7 @@ function TodoList() {
       navigate('/login')
       return
     }
-    axios.get('http://localhost:5000/api/tasks', {
+  axios.get(`${API_URL}/api/tasks`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setTasks(res.data))
   }, [token, navigate])
@@ -24,7 +25,7 @@ function TodoList() {
   const addTask = async (e) => {
     e.preventDefault()
     if (!content.trim()) return
-    const res = await axios.post('http://localhost:5000/api/tasks', { content }, {
+  const res = await axios.post(`${API_URL}/api/tasks`, { content }, {
       headers: { Authorization: `Bearer ${token}` }
     })
     setTasks([...tasks, res.data])
@@ -32,7 +33,7 @@ function TodoList() {
   }
 
   const updateTask = async (id) => {
-    const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, { content: editContent }, {
+  const res = await axios.put(`${API_URL}/api/tasks/${id}`, { content: editContent }, {
       headers: { Authorization: `Bearer ${token}` }
     })
     setTasks(tasks.map(t => t._id === id ? res.data : t))
